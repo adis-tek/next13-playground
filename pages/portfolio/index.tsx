@@ -1,4 +1,6 @@
 import React from "react";
+import path from "path";
+import fs from "fs/promises";
 
 export interface Props {
   products: Products[];
@@ -20,9 +22,13 @@ function PortfolioPage(props: Props) {
 }
 
 export async function getStaticProps() {
+  const filePath = path.join(process.cwd(), "data", "dummy.json");
+  const jsonData = await fs.readFile(filePath);
+  const data = JSON.parse(jsonData);
+
   return {
     props: {
-      products: [{ id: "p1", title: "Product 1" }],
+      products: data.products,
     },
   };
 }
