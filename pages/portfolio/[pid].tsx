@@ -30,7 +30,7 @@ function PortfolioProjectPage(props: Props) {
 export async function getStaticProps(context) {
   const { params } = context;
 
-  const productId = params.id;
+  const productId = params.pid;
 
   const filePath = path.join(process.cwd(), "data", "dummy.json");
   const jsonData = await fs.readFile(filePath);
@@ -44,6 +44,17 @@ export async function getStaticProps(context) {
     props: {
       loadedProduct: product,
     },
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    path: [
+      { params: { pid: "p1" } },
+      { params: { pid: "p2" } },
+      { params: { pid: "p3" } },
+    ],
+    fallback: false,
   };
 }
 
