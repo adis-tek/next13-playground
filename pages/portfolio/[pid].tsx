@@ -50,6 +50,7 @@ export async function getStaticProps(context) {
 export async function getStaticPaths() {
   return {
     paths: [
+      // Changed path to paths
       { params: { pid: "p1" } },
       { params: { pid: "p2" } },
       { params: { pid: "p3" } },
