@@ -50,6 +50,10 @@ export async function getStaticProps(context) {
     (product: Products) => product.id === productId
   );
 
+  if (!product) {
+    return { notFound: true };
+  }
+
   return {
     props: {
       loadedProduct: product,
@@ -64,7 +68,7 @@ export async function getStaticPaths() {
 
   const pathsWithParams = ids.map((id: string) => ({ params: { pid: id } }));
 
-  console.log(pathsWithParams); // [{ params: { pid: 'p1' } }, { params: { pid: 'p2' } }, { params: { pid: 'p3' } }]
+  //console.log(pathsWithParams); // [{ params: { pid: 'p1' } }, { params: { pid: 'p2' } }, { params: { pid: 'p3' } }]
 
   return {
     paths: [
