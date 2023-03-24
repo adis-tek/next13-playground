@@ -14,6 +14,10 @@ export interface Products {
 function PortfolioProjectPage(props: Props) {
   const { loadedProduct } = props;
 
+  if (!loadedProduct) {
+    return <p>Loading...</p>;
+  }
+
   const router = useRouter();
 
   router.pathname; // /portfolio/[projectid]
@@ -52,10 +56,10 @@ export async function getStaticPaths() {
     paths: [
       // Changed path to paths
       { params: { pid: "p1" } },
-      { params: { pid: "p2" } },
-      { params: { pid: "p3" } },
+      // { params: { pid: "p2" } }, Fallback set to true will still display this page after loading animation.
+      // { params: { pid: "p3" } }, Fallback set to true will still display this page after loading animation.
     ],
-    fallback: false,
+    fallback: true,
   };
 }
 
