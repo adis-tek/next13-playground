@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-
 interface Joke {
   id: number | string;
   jokeId: number;
   type: string;
   setup: string;
   punchline: string;
+  //   jokeData: Joke[];
 }
 
-function TenJokesSwrPage() {
-  const [jokeData, setJokeData] = useState<Joke[]>([]);
+function TenJokesSwrPage(props: Joke) {
+  const [jokeData, setJokeData] = useState<Joke[]>(props.jokeData);
   //   const [isLoading, setIsLoading] = useState(false);
 
   const { data, error } = useSWR(
@@ -63,7 +63,7 @@ function TenJokesSwrPage() {
     return <p>Error: {error}</p>;
   }
 
-  if (!data || !jokeData) {
+  if (!data && !jokeData) {
     return <p>Loading...</p>;
   }
 
@@ -82,6 +82,31 @@ function TenJokesSwrPage() {
   );
 }
 
-export default TenJokesSwrPage;
+export async function getStaticProps() {
+  const response = await fetch(
+    "https://official-joke-api.appspot.com/random_ten"
+  );
+  const data = await response.json();
+
+  const transformedData: Joke[] = [];
+
+  for (const key in data) {
+    transformedData.push({
+      id: key,
+      jokeId: data[key].id,
+      type: data[key].type,
+      setup: data[key].setup,
+      punchline: data[key].punchline,
+    });
+  }
+
+  return {
+    props: {
+      jokeData: transformedData,
+    },
+  };
+}
 
 // Dummy api -> https://official-joke-api.appspot.com/random_ten
+
+export default TenJokesSwrPage;
